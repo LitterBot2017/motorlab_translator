@@ -2,6 +2,7 @@
 
 import rospy
 import math
+from std_msgs.msg import Bool
 from motorlab_msgs.msg import MotorLab_Arduino
 from motorlab_msgs.msg import MotorLab_Arduino_Translation
 
@@ -13,6 +14,8 @@ class Arduino_Translator(object):
 
 		self.arduino_sub = rospy.Subscriber("ArduinoMsg", MotorLab_Arduino, self.ArduinoCb)
 		self.arduino_pub = rospy.Publisher("ArduinoTranslated", MotorLab_Arduino_Translation, queue_size = 1)
+		self.light_gate_pub = rospy.Publisher("LightGateState", Bool, queue_size = 1)
+		self.button_pub = rospy.Publisher("ActuatorsOn", Bool, queue_size = 1)
 		
 	def ArduinoCb(self,data):
 		self.Arduino_result = data
@@ -26,6 +29,9 @@ class Arduino_Translator(object):
 		self.Arduino_translation.light_gate_state = self.Arduino_result.light_gate_state
 		self.Arduino_translation.ultrasonic_distance = self.Arduino_result.ultrasonic_distance
 		self.Arduino_translation.ir_distance = self.translate_IR(self.Arduino_result.ir_distance)
+		self.Arduino_translation.button_state = self.Arduino_result.button_state
+		self.light_gate_pub.publish(bool(self.Arduino_result.light_gate_state))
+		self.button_pub.publish(bool(self.Arduino_result.button_state))
 		self.arduino_pub.publish(self.Arduino_translation)
 
 	def translate_temp(self,rawADC):
