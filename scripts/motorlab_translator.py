@@ -55,8 +55,8 @@ class Arduino_Translator(object):
 			return 40.0
 		return dist
 
-	def translate_ultra(self, rawADC):
-		dist = rawADC*(5.0/1023.0)/(5.0/512.0) #inches
+	def translate_ultra(self, pulseWidth):
+		dist = (pulseWidth*0.013)-4.4 #inches
 		if dist > 40.0:
 			return 40.0
 		return dist
