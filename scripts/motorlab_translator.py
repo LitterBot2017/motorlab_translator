@@ -27,7 +27,7 @@ class Arduino_Translator(object):
 		self.Arduino_translation.stepper_motor_position = self.Arduino_result.stepper_motor_position
 		self.Arduino_translation.temperature = self.translate_temp(self.Arduino_result.temperature)
 		self.Arduino_translation.light_gate_state = self.Arduino_result.light_gate_state
-		self.Arduino_translation.ultrasonic_distance = self.Arduino_result.ultrasonic_distance
+		self.Arduino_translation.ultrasonic_distance = self.translate_ultra(self.Arduino_result.ultrasonic_distance)
 		self.Arduino_translation.ir_distance = self.translate_IR(self.Arduino_result.ir_distance)
 		self.Arduino_translation.button_state = self.Arduino_result.button_state
 		self.light_gate_pub.publish(bool(self.Arduino_result.light_gate_state))
